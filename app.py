@@ -8,13 +8,18 @@ import requests
 app = Flask(__name__)
 
 # Download the model file if it doesn’t exist
-model_url = "https://drive.google.com/uc?export=download&id=1vOMTJz8JtXwFMvEek1e4gFRuJYl_nZAv" # Replace with your link
+model_url = "https://drive.google.com/uc?export=download&id=1vOMTJz8JtXwFMvEek1e4gFRuJYl_nZAv"  # Replace with your actual link
 model_path = "genre_classifier.pkl"
 if not os.path.exists(model_path):
     response = requests.get(model_url)
     with open(model_path, "wb") as f:
         f.write(response.content)
 model = joblib.load(model_path)
+
+# Create uploads folder if it doesn’t exist
+uploads_dir = "uploads"
+if not os.path.exists(uploads_dir):
+    os.makedirs(uploads_dir)
 
 def extract_features(file_path):
     y, sr = librosa.load(file_path)
@@ -26,7 +31,7 @@ def extract_features(file_path):
 def index():
     if request.method == "POST":
         file = request.files["file"]
-        file_path = os.path.join("uploads", file.filename)
+        file_path = os.path.join(uploads_dir, file.filename)  # Use uploads_dir here
         file.save(file_path)
         features = extract_features(file_path)
         prediction = model.predict([features])[0]
