@@ -3,9 +3,18 @@ import joblib
 import librosa
 import numpy as np
 import os
+import requests
 
 app = Flask(__name__)
-model = joblib.load("genre_classifier.pkl")
+
+# Download the model file if it doesn’t exist
+model_url = "https://drive.google.com/uc?export=download&id=1vOMTJz8JtXwFMvEek1e4gFRuJYl_nZAv" # Replace with your link
+model_path = "genre_classifier.pkl"
+if not os.path.exists(model_path):
+    response = requests.get(model_url)
+    with open(model_path, "wb") as f:
+        f.write(response.content)
+model = joblib.load(model_path)
 
 def extract_features(file_path):
     y, sr = librosa.load(file_path)
