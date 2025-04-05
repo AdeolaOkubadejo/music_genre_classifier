@@ -1,0 +1,7 @@
+venv/              # Virtual environment
+genres_original/   # GTZAN dataset folder
+uploads/           # Uploaded audio files
+features.csv       # Preprocessed data
+genre_classifier.pkl  # Trained model
+__pycache__/       # Python cache files
+*.pyc              # Compiled Python files

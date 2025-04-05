@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Genre Classifier</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Predicted Genre: {{ genre }}</h1>
+    <canvas id="probChart" width="400" height="200"></canvas>
+    <script>
+        var ctx = document.getElementById("probChart").getContext("2d");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: {{ genres|safe }},
+                datasets: [{ label: "Confidence", data: {{ probs|safe }} }]
+            }
+        });
+    </script>
+</body>
+</html>
